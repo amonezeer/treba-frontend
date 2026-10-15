@@ -69,6 +69,13 @@ export default function UserMenu() {
           >
             Особистий кабінет
           </Link>
+          <Link
+            href="/seller"
+            className={styles.accountLink}
+            onClick={() => setIsOpen(false)}
+          >
+            Кабінет продавця
+          </Link>
           <button
             className={styles.logoutButton}
             onClick={() => {

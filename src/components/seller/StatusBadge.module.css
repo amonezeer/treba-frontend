@@ -1,0 +1,45 @@
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+/* точка перед текстом */
+.badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+.success {
+    color: #2e7d32;
+    background-color: #eaf5eb;
+}
+
+.warning {
+    color: #b26a00;
+    background-color: #fff4e0;
+}
+
+.danger {
+    color: #c62828;
+    background-color: #fdecec;
+}
+
+.neutral {
+    color: #8a8578;
+    background-color: #f3f2ee;
+}
+
+.accent {
+    color: #ff6e2a;
+    background-color: #fff0e8;
+}

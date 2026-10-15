@@ -6,8 +6,14 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
 import styles from "./AccountSidebar.module.css";
 
-// Пункти навігації особистого кабінету
-const navItems = [
+export type AccountNavItem = {
+  label: string;
+  icon: string;
+  href: string;
+};
+
+// Пункти навігації особистого кабінету покупця (за замовчуванням)
+export const accountNavItems: AccountNavItem[] = [
   { label: "Особисті дані", icon: "/icons/user.svg", href: "/account" },
   { label: "Замовлення", icon: "/icons/box.svg", href: "/account/orders" },
   {
@@ -46,7 +52,20 @@ const navItems = [
   { label: "Підписки", icon: "/icons/subscriptions.svg", href: "/account/subscriptions" },
 ];
 
-export default function AccountSidebar() {
+type AccountSidebarProps = {
+  /** Пункти меню; без пропа — меню кабінету покупця */
+  items?: AccountNavItem[];
+  /** Підпис над поточним розділом у згорнутому меню (планшет/телефон) */
+  toggleHint?: string;
+  /** aria-label для навігації */
+  navLabel?: string;
+};
+
+export default function AccountSidebar({
+  items = accountNavItems,
+  toggleHint = "Розділ кабінету",
+  navLabel = "Розділи кабінету",
+}: AccountSidebarProps) {
   const { user } = useAuth();
   const pathname = usePathname();
   // Планшет и телефон: список разделов свёрнут в кнопку с текущим разделом
@@ -54,7 +73,7 @@ export default function AccountSidebar() {
 
   if (!user) return null;
 
-  const currentItem = navItems.find((item) => item.href === pathname) ?? navItems[0];
+  const currentItem = items.find((item) => item.href === pathname) ?? items[0];
 
   return (
     <aside className={styles.sidebar}>
@@ -77,7 +96,7 @@ export default function AccountSidebar() {
       >
         <img src={currentItem.icon} alt="" className={styles.toggleIcon} />
         <span className={styles.toggleText}>
-          <span className={styles.toggleHint}>Розділ кабінету</span>
+          <span className={styles.toggleHint}>{toggleHint}</span>
           <span className={styles.toggleLabel}>{currentItem.label}</span>
         </span>
         <svg
@@ -101,9 +120,9 @@ export default function AccountSidebar() {
       <nav
         id="account-sections"
         className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}
-        aria-label="Розділи кабінету"
+        aria-label={navLabel}
       >
-        {navItems.map((item) => {
+        {items.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
