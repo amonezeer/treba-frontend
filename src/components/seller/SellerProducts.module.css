@@ -1,0 +1,294 @@
+/* ---------- панель фільтрів ---------- */
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.checkLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #28251d;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #ff6e2a;
+    cursor: pointer;
+}
+
+.saveError {
+    padding: 10px 14px;
+    border-radius: 10px;
+    background-color: #fdecec;
+    color: #c62828;
+    font-size: 14px;
+}
+
+/* ---------- список ---------- */
+.list {
+    border: 1px solid #e5e3dd;
+    border-radius: 12px;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
+.listHeader,
+.row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 120px 150px 90px 140px;
+    align-items: center;
+    gap: 16px;
+    padding: 0 24px;
+}
+
+.listHeader {
+    height: 44px;
+    border-bottom: 1px solid #e5e3dd;
+    background-color: #faf9f6;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8a8578;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.row {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    color: #28251d;
+}
+
+.row+.row {
+    border-top: 1px solid #f0eee9;
+}
+
+.product {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+
+.thumb {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 56px;
+    border: 1px solid #f0eee9;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.productInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.productTitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: #28251d;
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+a.productTitle:hover {
+    color: #ff6e2a;
+}
+
+.productMeta {
+    font-size: 12px;
+    color: #8a8578;
+}
+
+.price,
+.stock,
+.sold {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+}
+
+.priceValue {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.oldPrice {
+    font-size: 12px;
+    color: #8a8578;
+    text-decoration: line-through;
+    white-space: nowrap;
+}
+
+.stockLow,
+.stockOut {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.stockLow {
+    color: #b26a00;
+}
+
+.stockOut {
+    color: #c62828;
+}
+
+.status {
+    display: flex;
+}
+
+/* підписи комірок — лише на телефоні */
+.cellLabel {
+    display: none;
+    font-size: 12px;
+    color: #8a8578;
+}
+
+.emptyText {
+    padding: 32px 24px;
+    font-size: 14px;
+    color: #8a8578;
+    text-align: center;
+}
+
+.footerNote {
+    font-size: 13px;
+    color: #8a8578;
+}
+
+/* ---------- скелетон ---------- */
+.skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.block {
+    border-radius: 12px;
+    background: linear-gradient(90deg, #f1efea 0%, #e5e3dd 50%, #f1efea 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.skeletonToolbar {
+    height: 42px;
+    max-width: 520px;
+}
+
+.skeletonList {
+    height: 480px;
+}
+
+.srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .block {
+        animation: none;
+    }
+}
+
+/* ---------- адаптив ---------- */
+@media (max-width: 1280px) {
+
+    .listHeader,
+    .row {
+        grid-template-columns: minmax(0, 1fr) 110px 140px 130px;
+    }
+
+    /* «Продано» ховаємо — воно є в картці на телефоні */
+    .listHeader span:nth-child(4),
+    .sold {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .listHeader {
+        display: none;
+    }
+
+    /* рядок стає карткою */
+    .row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-areas:
+            "product product"
+            "price stock"
+            "sold status";
+        row-gap: 12px;
+        padding: 16px;
+    }
+
+    .product {
+        grid-area: product;
+        align-items: flex-start;
+    }
+
+    .price {
+        grid-area: price;
+    }
+
+    .stock {
+        grid-area: stock;
+    }
+
+    .sold {
+        grid-area: sold;
+        display: flex;
+    }
+
+    .status {
+        grid-area: status;
+        align-items: flex-end;
+    }
+
+    .cellLabel {
+        display: block;
+    }
+}

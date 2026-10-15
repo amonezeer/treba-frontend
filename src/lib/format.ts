@@ -20,3 +20,26 @@ export function pluralize(count: number, forms: [string, string, string]): strin
   if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return forms[1];
   return forms[2];
 }
+
+const dateFormatter = new Intl.DateTimeFormat("uk-UA", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+const dateTimeFormatter = new Intl.DateTimeFormat("uk-UA", {
+  day: "numeric",
+  month: "long",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
+// "2026-10-15" -> "15 жовтня 2026 р."
+export function formatDate(iso: string): string {
+  return dateFormatter.format(new Date(iso));
+}
+
+// "2026-10-15T08:12:00" -> "15 жовтня о 08:12"
+export function formatDateTime(iso: string): string {
+  return dateTimeFormatter.format(new Date(iso));
+}

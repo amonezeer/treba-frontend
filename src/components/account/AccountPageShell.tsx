@@ -5,15 +5,24 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
 import Header from "../layout/Header";
 import Footer from "../home/Footer";
-import AccountSidebar from "./AccountSidebar";
+import AccountSidebar, { type AccountNavItem } from "./AccountSidebar";
 import styles from "./AccountPageShell.module.css";
 
 type AccountPageShellProps = {
   children: React.ReactNode;
+  /** Свої пункти меню (напр. кабінет продавця); без пропа — меню покупця */
+  navItems?: AccountNavItem[];
+  toggleHint?: string;
+  navLabel?: string;
 };
 
-// Спільний каркас для головної сторінки кабінету (/account) і всіх його розділів
-export default function AccountPageShell({ children }: AccountPageShellProps) {
+// Спільний каркас кабінетів: покупця (/account) і продавця (/seller)
+export default function AccountPageShell({
+  children,
+  navItems,
+  toggleHint,
+  navLabel,
+}: AccountPageShellProps) {
   const { user, isLoading } = useAuth();
   const router = useRouter();
 
@@ -38,7 +47,7 @@ export default function AccountPageShell({ children }: AccountPageShellProps) {
 
         <div className={styles.pageContent}>
           <div className={styles.leftColumn}>
-            <AccountSidebar />
+            <AccountSidebar items={navItems} toggleHint={toggleHint} navLabel={navLabel} />
           </div>
 
           <div className={styles.mainContent}>{children}</div>
