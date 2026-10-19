@@ -4,13 +4,13 @@ import { useRouter } from "next/navigation";
 import AuthModal from "../../../components/auth/AuthModal";
 import RegisterForm from "../../../components/auth/RegisterForm";
 
-// Аналогично (.)login — перехватывает переход на /register изнутри
-// приложения и показывает форму как модалку поверх текущей страницы.
+// Перехоплений /register: форма в модальному вікні поверх поточної сторінки.
+// Після реєстрації закриваємо модалку — користувач лишається на сторінці, з якої відкрив її.
 export default function InterceptedRegisterModal() {
   const router = useRouter();
   return (
     <AuthModal onClose={() => router.back()}>
-      <RegisterForm />
+      <RegisterForm onSuccess={() => router.back()} />
     </AuthModal>
   );
 }

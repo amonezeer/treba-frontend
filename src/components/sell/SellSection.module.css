@@ -1,0 +1,88 @@
+.section {
+    width: 100%;
+    padding: 96px 0;
+    /* якорь не прячется под липким хедером */
+    scroll-margin-top: var(--sell-header-h, 72px);
+}
+
+.fullscreen {
+    display: flex;
+    align-items: center;
+    min-height: calc(100svh - var(--sell-header-h, 72px));
+}
+
+.inner {
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.heading {
+    max-width: 1100px;
+    margin: 0 auto 56px;
+    text-align: center;
+}
+
+.eyebrow {
+    display: inline-block;
+    margin-bottom: 14px;
+    color: #ff6e2a;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.title {
+    font-size: clamp(30px, 3.4vw, 56px);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: #28251d;
+}
+
+.subtitle {
+    max-width: 760px;
+    margin: 16px auto 0;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #8a8578;
+}
+
+@media (max-width: 1024px) {
+    .section {
+        padding: 72px 0;
+    }
+
+    .inner {
+        padding: 0 24px;
+    }
+
+    .heading {
+        margin-bottom: 40px;
+    }
+}
+
+@media (max-width: 600px) {
+    .section {
+        padding: 56px 0;
+    }
+
+    /* на телефоне блоки по высоте контента, а не экрана */
+    .fullscreen {
+        min-height: 0;
+    }
+
+    .inner {
+        padding: 0 16px;
+    }
+
+    .heading {
+        margin-bottom: 28px;
+    }
+
+    .subtitle {
+        font-size: 15px;
+    }
+}

@@ -2,8 +2,9 @@
 
 import { useState, FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
+import { buildAuthHref, getSafeNextPath } from "../../lib/redirect";
 import { EyeIcon, EyeOffIcon, GoogleIcon } from "./Icons";
 import styles from "./AuthForm.module.css";
 
@@ -16,9 +17,19 @@ type FormErrors = {
   agree?: string;
 };
 
-export default function RegisterForm() {
+type RegisterFormProps = {
+  /** Если задан (модалка), вызывается после регистрации вместо перехода по ?next */
+  onSuccess?: () => void;
+};
+
+export default function RegisterForm({ onSuccess }: RegisterFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { register } = useAuth();
+
+  // Куда вернуть после регистрации (?next=/sell#apply)
+  const nextParam = searchParams.get("next");
+  const nextPath = getSafeNextPath(nextParam);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -29,7 +40,6 @@ export default function RegisterForm() {
   const [agree, setAgree] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [formError, setFormError] = useState("");
-
 
   function isPasswordValid(value: string) {
     return (
@@ -74,16 +84,22 @@ export default function RegisterForm() {
     if (!validate()) return;
 
     try {
-register(
-  `${firstName.trim()} ${lastName.trim()}`.trim(),
-  email,
-  password,
-  {
-    firstName: firstName.trim(),
-    lastName: lastName.trim(),
-    phone: phone.trim(),
-  }
-);      router.push("/");
+      register(
+        `${firstName.trim()} ${lastName.trim()}`.trim(),
+        email,
+        password,
+        {
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          phone: phone.trim(),
+        }
+      );
+
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        router.push(nextPath);
+      }
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Помилка реєстрації");
     }
@@ -212,7 +228,12 @@ register(
         </form>
 
         <p className={styles.switchText}>
-          <Link href="/login" className={styles.switchLink}>
+          {/* replace: в истории не копится «реєстрація → вхід», back() вернёт на исходную страницу */}
+          <Link
+            href={buildAuthHref("/login", nextParam ? nextPath : undefined)}
+            replace
+            className={styles.switchLink}
+          >
             Я вже зареєстрований
           </Link>
         </p>

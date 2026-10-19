@@ -2,14 +2,25 @@
 
 import { useState, FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
+import { buildAuthHref, getSafeNextPath } from "../../lib/redirect";
 import { EyeIcon, EyeOffIcon, GoogleIcon } from "./Icons";
 import styles from "./AuthForm.module.css";
 
-export default function LoginForm() {
+type LoginFormProps = {
+  /** Если задан (модалка), вызывается после входа вместо перехода по ?next */
+  onSuccess?: () => void;
+};
+
+export default function LoginForm({ onSuccess }: LoginFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAuth();
+
+  // Куда вернуть после входа (?next=/sell#apply)
+  const nextParam = searchParams.get("next");
+  const nextPath = getSafeNextPath(nextParam);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,13 +54,16 @@ export default function LoginForm() {
 
     try {
       login(email, password);
-      router.push("/");
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        router.push(nextPath);
+      }
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Помилка входу");
     }
   }
 
-  
   function handleSocialClick() {
     setFormError("Вхід через соцмережі буде доступний пізніше");
   }
@@ -122,7 +136,12 @@ export default function LoginForm() {
         </form>
 
         <p className={styles.switchText}>
-          <Link href="/register" className={styles.switchLink}>
+          {/* replace: в истории не копится «вхід → реєстрація», back() вернёт на исходную страницу */}
+          <Link
+            href={buildAuthHref("/register", nextParam ? nextPath : undefined)}
+            replace
+            className={styles.switchLink}
+          >
             Зареєструватися
           </Link>
         </p>

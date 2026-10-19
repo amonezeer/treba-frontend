@@ -1,0 +1,389 @@
+/* ---------- Режим прокрутки (компьютер) ---------- */
+
+@media (min-width: 901px) {
+
+    /* Высокий блок: экран + по 65% экрана на каждый шаг */
+    .track {
+        height: calc(var(--steps, 4) * 65svh + 100svh - var(--sell-header-h, 72px));
+    }
+
+    /* Содержимое прилипает под хедером, пока листаем блок */
+    .sticky {
+        position: sticky;
+        top: var(--sell-header-h, 72px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: calc(100svh - var(--sell-header-h, 72px));
+        padding: 16px 0;
+    }
+
+    .title {
+        white-space: nowrap;
+    }
+}
+
+/* ---------- Заголовок ---------- */
+
+.heading {
+    max-width: 1100px;
+    margin: 0 auto clamp(24px, 5svh, 56px);
+    text-align: center;
+}
+
+.eyebrow {
+    display: inline-block;
+    margin-bottom: 14px;
+    color: #ff6e2a;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.title {
+    font-size: clamp(30px, 3.6vw, 60px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #28251d;
+}
+
+.subtitle {
+    margin-top: 14px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #8a8578;
+}
+
+/* ---------- Шаги + карточка ---------- */
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(340px, 440px) 1fr;
+    gap: 32px;
+    align-items: stretch;
+}
+
+.tabs {
+    --done: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Вертикальная линия за кружками и её заполнение по прокрутке */
+.tabs::before,
+.tabs::after {
+    content: "";
+    position: absolute;
+    left: 47px;
+    width: 2px;
+    border-radius: 1px;
+}
+
+.tabs::before {
+    top: 46px;
+    bottom: 46px;
+    background: #e5e3dd;
+}
+
+.tabs::after {
+    top: 46px;
+    height: calc((100% - 92px) * var(--done));
+    background: #ff6e2a;
+}
+
+.tab {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    padding: clamp(14px, 2.2svh, 22px) 24px;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    background: transparent;
+    color: #28251d;
+    text-align: left;
+    cursor: pointer;
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.tab:hover {
+    background: #faf9f7;
+}
+
+.tab:focus-visible {
+    outline: 2px solid #ff6e2a;
+    outline-offset: 2px;
+}
+
+.tabActive,
+.tabActive:hover {
+    background: #ffffff;
+    border-color: #e5e3dd;
+    box-shadow: 0 16px 36px rgba(40, 37, 29, 0.08);
+}
+
+.tabNumber {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border: 2px solid #e5e3dd;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #8a8578;
+    font-size: 18px;
+    font-weight: 700;
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.tabActive .tabNumber {
+    border-color: #ff6e2a;
+    background: #ff6e2a;
+    color: #ffffff;
+    box-shadow: 0 0 0 8px rgba(255, 110, 42, 0.15);
+    transform: scale(1.05);
+}
+
+.tabDone .tabNumber {
+    border-color: #ff6e2a;
+    background: #fff1ea;
+    color: #ff6e2a;
+}
+
+.tabText {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.tabTitle {
+    font-size: clamp(17px, 1.3vw, 21px);
+    font-weight: 700;
+}
+
+.tabDuration {
+    font-size: 15px;
+    font-weight: 500;
+    color: #8a8578;
+}
+
+/* ---------- Карточка шага ---------- */
+
+.panel {
+    --step-progress: 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: clamp(32px, 5svh, 64px) clamp(32px, 4vw, 72px);
+    border-radius: 32px;
+    background: linear-gradient(135deg, #fff7f2 0%, #ffe6d6 100%);
+}
+
+.progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: rgba(255, 110, 42, 0.15);
+}
+
+/* Заполнение текущего шага по прокрутке */
+.progressFill {
+    display: block;
+    height: 100%;
+    background: #ff6e2a;
+    transform: scaleX(var(--step-progress));
+    transform-origin: left;
+}
+
+.panelBody {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    animation: fadeUp 0.45s ease both;
+}
+
+.panelStep {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #ff6e2a;
+}
+
+.panelTitle {
+    margin-top: 12px;
+    font-size: clamp(28px, 2.6vw, 46px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #28251d;
+}
+
+.panelText {
+    margin-top: 16px;
+    font-size: clamp(16px, 1.2vw, 19px);
+    line-height: 1.6;
+    color: #5f5a4e;
+}
+
+.points {
+    display: grid;
+    gap: 14px;
+    margin-top: clamp(20px, 3svh, 32px);
+}
+
+.point {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: clamp(15px, 1.1vw, 18px);
+    font-weight: 600;
+    color: #28251d;
+}
+
+.pointIcon {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #ff6e2a;
+    color: #ffffff;
+}
+
+/* Большая цифра шага на фоне */
+.bigNumber {
+    position: absolute;
+    right: 32px;
+    bottom: -56px;
+    font-size: clamp(180px, 18vw, 320px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: rgba(255, 110, 42, 0.12);
+    pointer-events: none;
+    user-select: none;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .panelBody {
+        animation: none;
+    }
+
+    .tab,
+    .tabNumber {
+        transition: none;
+    }
+}
+
+/* ---------- Планшет и телефон: без прилипания ---------- */
+
+@media (max-width: 900px) {
+    .layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .tabs::before,
+    .tabs::after {
+        display: none;
+    }
+
+    .tab {
+        gap: 12px;
+        padding: 14px 16px;
+        border-color: #e5e3dd;
+    }
+
+    .tabNumber {
+        width: 38px;
+        height: 38px;
+        font-size: 15px;
+    }
+
+    .tabActive .tabNumber {
+        box-shadow: 0 0 0 5px rgba(255, 110, 42, 0.15);
+    }
+
+    .panel {
+        padding: 32px 28px;
+        border-radius: 24px;
+    }
+
+    .bigNumber {
+        font-size: 150px;
+        bottom: -28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .subtitle {
+        font-size: 15px;
+    }
+
+    .tabs {
+        gap: 8px;
+    }
+
+    .tab {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 14px;
+    }
+
+    .tabTitle {
+        font-size: 15px;
+    }
+
+    .tabDuration {
+        font-size: 13px;
+    }
+
+    .panel {
+        padding: 24px 20px;
+        border-radius: 20px;
+    }
+
+    .panelTitle {
+        font-size: 24px;
+    }
+}

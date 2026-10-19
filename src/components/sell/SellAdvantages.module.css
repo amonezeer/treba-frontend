@@ -1,0 +1,127 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.card {
+    position: relative;
+    min-height: 280px;
+    padding: 40px 36px;
+    border: 1px solid transparent;
+    border-radius: 28px;
+    background: #faf9f7;
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.card:hover {
+    background: #ffffff;
+    border-color: #ffc4a6;
+    box-shadow: 0 24px 50px rgba(40, 37, 29, 0.1);
+    transform: translateY(-6px);
+}
+
+.number {
+    position: absolute;
+    top: 36px;
+    right: 36px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #d9d5cc;
+    transition: color 0.25s ease;
+}
+
+.card:hover .number {
+    color: #ff6e2a;
+}
+
+.icon {
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    border-radius: 20px;
+    background: #fff1ea;
+    color: #ff6e2a;
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.card:hover .icon {
+    background: #ff6e2a;
+    color: #ffffff;
+    transform: rotate(-6deg) scale(1.05);
+}
+
+.title {
+    margin-top: 28px;
+    font-size: clamp(20px, 1.5vw, 26px);
+    font-weight: 700;
+    color: #28251d;
+}
+
+.text {
+    margin-top: 12px;
+    max-width: 460px;
+    font-size: clamp(15px, 1.05vw, 18px);
+    line-height: 1.6;
+    color: #8a8578;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .card,
+    .icon {
+        transition: none;
+    }
+
+    .card:hover,
+    .card:hover .icon {
+        transform: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .card {
+        min-height: 0;
+        padding: 32px 28px;
+    }
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .card {
+        padding: 24px 22px;
+        border-radius: 22px;
+    }
+
+    .number {
+        top: 24px;
+        right: 22px;
+    }
+
+    .icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+    }
+
+    .title {
+        margin-top: 20px;
+    }
+}

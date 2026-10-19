@@ -70,6 +70,13 @@ export default function UserMenu() {
             Особистий кабінет
           </Link>
           <Link
+            href="/sell"
+            className={styles.accountLink}
+            onClick={() => setIsOpen(false)}
+          >
+            Стати продавцем
+          </Link>
+          <Link
             href="/seller"
             className={styles.accountLink}
             onClick={() => setIsOpen(false)}
