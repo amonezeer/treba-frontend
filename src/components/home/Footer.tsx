@@ -1,4 +1,15 @@
+import Link from "next/link";
 import styles from "./Footer.module.css";
+
+type FooterLink = {
+  label: string;
+  href: string;
+};
+
+type FooterColumn = {
+  title: string;
+  links: FooterLink[];
+};
 
 const socialLinks = [
   { name: "TikTok", icon: "/icons/TikTok.svg" },
@@ -9,18 +20,32 @@ const socialLinks = [
   { name: "X", icon: "/icons/x.svg" },
 ];
 
-const linkColumns = [
+// Ссылки с "#" — страницы ещё не сделаны
+const linkColumns: FooterColumn[] = [
   {
     title: "Про компанію",
-    links: ["Про нас", "Умови використання сайту", "Вакансії", "Контакти"],
+    links: [
+      { label: "Про нас", href: "#" },
+      { label: "Умови використання сайту", href: "#" },
+      { label: "Вакансії", href: "#" },
+      { label: "Контакти", href: "#" },
+    ],
   },
   {
     title: "Допомога",
-    links: ["Доставка та оплата", "Гарантія", "Повернення товару"],
+    links: [
+      { label: "Доставка та оплата", href: "#" },
+      { label: "Гарантія", href: "#" },
+      { label: "Повернення товару", href: "#" },
+    ],
   },
   {
     title: "Партнерам",
-    links: ["Продавати на TREBA", "Реклама на TREBA", "Співпраця з нами"],
+    links: [
+      { label: "Продавати на TREBA", href: "/sell" },
+      { label: "Реклама на TREBA", href: "#" },
+      { label: "Співпраця з нами", href: "#" },
+    ],
   },
 ];
 
@@ -51,9 +76,9 @@ export default function Footer() {
             <div key={column.title} className={styles.linkColumn}>
               <p className={styles.columnTitle}>{column.title}</p>
               {column.links.map((link) => (
-                <a key={link} href="#" className={styles.footerLink}>
-                  {link}
-                </a>
+                <Link key={link.label} href={link.href} className={styles.footerLink}>
+                  {link.label}
+                </Link>
               ))}
             </div>
           ))}

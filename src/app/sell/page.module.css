@@ -1,0 +1,13 @@
+/* Высота хедера лендинга — от неё считаются первый экран и якоря */
+.page {
+    --sell-header-h: 72px;
+    min-height: 100vh;
+    color: #28251d;
+    background: #ffffff;
+}
+
+@media (max-width: 600px) {
+    .page {
+        --sell-header-h: 64px;
+    }
+}

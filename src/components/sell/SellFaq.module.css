@@ -1,0 +1,232 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.item {
+    border: 1px solid #e5e3dd;
+    border-radius: 22px;
+    background: #ffffff;
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.item:hover {
+    border-color: #ffd9c6;
+}
+
+.open,
+.open:hover {
+    border-color: #ffc4a6;
+    box-shadow: 0 16px 36px rgba(40, 37, 29, 0.07);
+}
+
+.questionHeading {
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+.question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    padding: 26px 32px;
+    border: 0;
+    border-radius: 22px;
+    background: transparent;
+    color: #28251d;
+    font-size: clamp(16px, 1.25vw, 20px);
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.question:hover,
+.open .question {
+    color: #ff6e2a;
+}
+
+.question:focus-visible {
+    outline: 2px solid #ff6e2a;
+    outline-offset: -2px;
+}
+
+/* Плюс, который поворачивается в крестик */
+.plus {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #fff1ea;
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease;
+}
+
+.plus::before,
+.plus::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 2px;
+    border-radius: 1px;
+    background: #ff6e2a;
+    transform: translate(-50%, -50%);
+    transition: background-color 0.3s ease;
+}
+
+.plus::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.open .plus {
+    background: #ff6e2a;
+    transform: rotate(45deg);
+}
+
+.open .plus::before,
+.open .plus::after {
+    background: #ffffff;
+}
+
+/* Плавное раскрытие: строка сетки растёт от 0fr до 1fr */
+.panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s ease;
+}
+
+.open .panel {
+    grid-template-rows: 1fr;
+}
+
+.panelInner {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.answer {
+    max-width: 900px;
+    padding: 0 32px 28px;
+    font-size: clamp(15px, 1.1vw, 18px);
+    line-height: 1.65;
+    color: #5f5a4e;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+.open .answer {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.08s;
+}
+
+/* Плашка под вопросами */
+.help {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+    max-width: 1100px;
+    margin: 32px auto 0;
+    padding: 28px 36px;
+    border-radius: 24px;
+    background: #28251d;
+    color: #ffffff;
+}
+
+.helpTitle {
+    font-size: clamp(18px, 1.4vw, 22px);
+    font-weight: 700;
+}
+
+.helpText {
+    margin-top: 6px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.helpLink {
+    padding: 15px 28px;
+    border-radius: 14px;
+    background: #ff6e2a;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.helpLink:hover {
+    background: #ff7f43;
+    transform: translateY(-2px);
+}
+
+.helpLink:focus-visible {
+    outline: 2px solid #ffb48f;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .panel,
+    .answer,
+    .plus,
+    .plus::before,
+    .plus::after,
+    .helpLink {
+        transition: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .list {
+        gap: 10px;
+    }
+
+    .item,
+    .question {
+        border-radius: 18px;
+    }
+
+    .question {
+        gap: 14px;
+        padding: 18px 18px;
+    }
+
+    .plus {
+        width: 34px;
+        height: 34px;
+    }
+
+    .answer {
+        padding: 0 18px 20px;
+    }
+
+    .help {
+        margin-top: 24px;
+        padding: 22px 20px;
+    }
+
+    .helpLink {
+        width: 100%;
+        text-align: center;
+    }
+}
