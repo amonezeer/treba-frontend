@@ -88,6 +88,7 @@ export function mapCatalogProduct(
 
   return {
     id: dto.slug,
+    backendId: dto.id,
     title: dto.name,
     price: formatPrice(dto.price),
     oldPrice: null, // бэк пока не отдаёт старую цену в каталоге
