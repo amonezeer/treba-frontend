@@ -32,7 +32,13 @@ function withMockSeller(product: Product): Product {
   return {
     ...product,
     categoryId: product.categoryId ?? link.categoryId,
-    seller: { id: seller.id, name: seller.name, logo: seller.logo },
+    seller: {
+      id: seller.id,
+      name: seller.name,
+      logo: seller.logo,
+      rating: seller.rating?.average,
+      ratingCount: seller.rating?.count,
+    },
   };
 }
 
