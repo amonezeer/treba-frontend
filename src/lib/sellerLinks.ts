@@ -1,4 +1,4 @@
-import type { SellerProductsSort } from "../types/seller";
+import type { SellerProductsSort, SellerReviewsSort } from "../types/seller";
 
 export const SELLER_SORT_OPTIONS: { value: SellerProductsSort; label: string }[] = [
   { value: "popular", label: "За рейтингом" },
@@ -34,4 +34,27 @@ export function sellerProductsHref(sellerId: string, params: SellerProductsParam
 
   const search = query.toString();
   return `/seller/${encodeURIComponent(sellerId)}${search ? `?${search}` : ""}`;
+}
+
+// ---------- Отзывы ----------
+
+export const SELLER_REVIEWS_SORT_OPTIONS: { value: SellerReviewsSort; label: string }[] = [
+  { value: "newest", label: "Спочатку нові" },
+  { value: "highest", label: "Спочатку позитивні" },
+  { value: "lowest", label: "Спочатку негативні" },
+];
+
+export const DEFAULT_REVIEWS_SORT: SellerReviewsSort = "newest";
+
+/** Строка из адреса -> допустимая сортировка отзывов. */
+export function parseReviewsSort(value: string | undefined): SellerReviewsSort {
+  return SELLER_REVIEWS_SORT_OPTIONS.some((option) => option.value === value)
+    ? (value as SellerReviewsSort)
+    : DEFAULT_REVIEWS_SORT;
+}
+
+/** /seller/technodim/reviews?sort=lowest */
+export function sellerReviewsHref(sellerId: string, sort: SellerReviewsSort = DEFAULT_REVIEWS_SORT): string {
+  const base = `/seller/${encodeURIComponent(sellerId)}/reviews`;
+  return sort === DEFAULT_REVIEWS_SORT ? base : `${base}?sort=${sort}`;
 }
