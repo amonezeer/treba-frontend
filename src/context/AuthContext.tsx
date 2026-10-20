@@ -40,8 +40,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     // Retire the old demo identities and plaintext passwords. API sessions live in HttpOnly cookies.
-    for (const key of ["treba_users", "treba_session"]) localStorage.removeItem(key);
-    for (const key of ["treba_demo_users", "treba_demo_session"]) sessionStorage.removeItem(key);
+    try {
+      for (const key of ["treba_users", "treba_session"]) localStorage.removeItem(key);
+      for (const key of ["treba_demo_users", "treba_demo_session"]) sessionStorage.removeItem(key);
+    } catch { /* Cookie authentication also works when browser storage is unavailable. */ }
     let active = true;
     void sessionRequest().then(result => { if (active) setUser(restorePreferences(result.user)); }).catch(() => {}).finally(() => { if (active) setIsLoading(false); });
     return () => { active = false; };
